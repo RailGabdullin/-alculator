@@ -13,7 +13,9 @@ public class EqualActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (window.isGotResult()) { window.clear();}
+        if (window.isGotResult()) {
+            window.setArg1(window.getResult());
+            window.clear(); }
         if(window.getResultText().length() > 0 &&
                 window.getResultText().charAt(window.getResultText().length() - 1) != '+'&&
                 window.getResultText().charAt(window.getResultText().length() - 1) != '-'&&

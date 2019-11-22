@@ -24,7 +24,10 @@ public class Window extends JFrame {
     Window(){
 
         super ("Калькулятор");
+        ImageIcon img = new ImageIcon("icon.png");
+        setIconImage(img.getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setLocation(500,200);
         setPreferredSize(new Dimension(360, 500));
 
         JPanel buttonsPane = new JPanel(new GridLayout(4,4));
@@ -32,20 +35,20 @@ public class Window extends JFrame {
         //Генерируем панель мат. операций
         Button [] operationsButtons = new Button[4];
 
-        operationsButtons [0] = new Button("+");
+        operationsButtons [0] = new Button("<html><font size = 6>" + "+" + "</font>");
         OperationActionListener listenerPlus = new OperationActionListener('+', this);
         operationsButtons[0].addActionListener(listenerPlus);
 
 
-        operationsButtons [1] = new Button("-");
+        operationsButtons [1] = new Button("<html><font size = 6>" + "-" + "</font>");
         OperationActionListener listenerMinus = new OperationActionListener('-', this);
         operationsButtons[1].addActionListener(listenerMinus);
 
-        operationsButtons [2] = new Button("*");
+        operationsButtons [2] = new Button("<html><font size = 6>" + "*" + "</font>");
         OperationActionListener listenerMultiplication = new OperationActionListener('*', this);
         operationsButtons[2].addActionListener(listenerMultiplication);
 
-        operationsButtons [3] = new Button("/");
+        operationsButtons [3] = new Button("<html><font size = 6>" + "/" + "</font>");
         OperationActionListener listenerDivision = new OperationActionListener('/', this);
         operationsButtons[3].addActionListener(listenerDivision);
 
@@ -53,20 +56,11 @@ public class Window extends JFrame {
         Button [] numbersButtons = new Button[10];
         NumberActionListener [] numberButtonListener = new NumberActionListener[10];
         for (int i = 0; i < numbersButtons.length; i++) {
-            numbersButtons[i] = new Button(""+i);
-            int finalI = i;
+            numbersButtons[i] = new Button("<html><font size = 5>" + i + "</font>");
             numberButtonListener [i] = new NumberActionListener(i,this);
             numbersButtons[i].addActionListener(numberButtonListener[i]);
         }
 
-        Button clearButton = new Button("C");
-        ActionListener clearListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clear();
-            }
-        };
-        clearButton.addActionListener(clearListener);
 
         //Добавляем кнопки цифр и операторо в панель кнопок
         int j = 0;
@@ -77,8 +71,8 @@ public class Window extends JFrame {
                 k++;
             } else if (i == 13) {
                 buttonsPane.add(numbersButtons[j]);
-            } else if (i == 14){
-                buttonsPane.add(clearButton);
+//            } else if (i == 14){
+//                buttonsPane.add(clearButton);
             }else if (i >= 12){
                 buttonsPane.add(new Box(1));
             } else {
@@ -87,18 +81,31 @@ public class Window extends JFrame {
             }
         }
 
-        //Отдельно создаем и добавляем кнопку "равно"
-        Button showResult = new Button("=");
+        //Отдельно создаем кнопку "равно"
+        Button showResult = new Button("<html><font size = 6>" + "=" + "</font>");
         EqualActionListener listenerEqual = new EqualActionListener(this);
         showResult.addActionListener(listenerEqual);
 
+        //Создаем кнопку С
+        Button clearButton = new Button("<html><font size = 6>" + "C" + "</font>");
+        ActionListener clearListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clear();
+            }
+        };
+        clearButton.addActionListener(clearListener);
+        clearButton.setPreferredSize(new Dimension(getWidth()/4, 75));
+
+        //Добавляем кнопки равно и C на отдельную панель
         Box showResultBox = Box.createHorizontalBox();
-        showResultBox.setPreferredSize(new Dimension(360, 75));
-        showResultBox.add(showResult);
+        showResultBox.setPreferredSize(new Dimension(getWidth(), 75));
+        showResultBox.add(showResult, BorderLayout.WEST);
+        showResultBox.add(clearButton, BorderLayout.EAST);
 
         //Создаем табло с результатом ввода и вывода
         Box box = Box.createHorizontalBox();
-        box.setPreferredSize(new Dimension(360, 75));
+        box.setPreferredSize(new Dimension(getWidth(), 75));
         box.add(resultText);
         resultText.setHorizontalAlignment(SwingConstants.RIGHT);
 
